@@ -1,5 +1,8 @@
 <template>
-  <div>记账页面</div>
+  <div>
+    记账页面
+    <Nav />
+  </div>
 </template>
 
 <script>
