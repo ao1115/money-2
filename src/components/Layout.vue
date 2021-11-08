@@ -1,12 +1,15 @@
 <template>
-  <div>
-    <Layout> 这是主页 </Layout>
+  <div class="nav-wrapper">
+    <div class="content">
+      <slot />
+    </div>
+    <Nav />
   </div>
 </template>
 
 <script>
 export default {
-  name: "Monye",
+  name: "Layout",
 };
 </script>
 

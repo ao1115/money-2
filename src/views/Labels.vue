@@ -1,8 +1,7 @@
 
 <template>
   <div>
-    标签页面
-    <Nav />
+    <Layout> 标签页面 </Layout>
   </div>
 </template>
 
