@@ -1,14 +1,31 @@
 <template>
-  <div>
-    <Layout> 这是主页 </Layout>
-  </div>
+  <Layout class-prefix="layout">
+    <NumberPad />
+    <Types />
+    <Notes />
+    <Tags />
+  </Layout>
 </template>
 
 <script>
+import NumberPad from "@/components/money/NumberPad.vue";
+import Types from "@/components/money/Types.vue";
+import Notes from "@/components/money/Notes.vue";
+import Tags from "@/components/money/Tags.vue";
 export default {
-  name: "Monye",
+  name: "Money",
+  components: { NumberPad, Types, Tags, Notes },
 };
 </script>
+<style lang = "scss">
+/* 写前缀的class名 */
+.layout-content {
+  display: flex;
+  flex-direction: column-reverse;
+}
+</style>
 
 <style lang="scss" scoped>
+@import "~@/assets/style/helper.scss";
+@import "~@/assets/style/reset.scss";
 </style>

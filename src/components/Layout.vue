@@ -1,6 +1,7 @@
 <template>
-  <div class="nav-wrapper">
-    <div class="content">
+  <div class="layout-wrapper">
+    <div class="content" :class="classPrefix && `${classPrefix}-content`">
+      <!-- 先判断是不是有classPrefix -->
       <slot />
     </div>
     <Nav />
@@ -9,19 +10,18 @@
 
 <script>
 export default {
-  name: "Layout",
+  props: ["classPrefix"], //准备一个带有前缀的class名,可以单独设置
 };
 </script>
 
 <style lang="scss" scoped>
-.nav-wrapper {
-  border: 1px solid red;
+.layout-wrapper {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 .content {
   overflow: auto;
-  flex-grow: 1; //把高度尽量的给它，剩下的是Nav的
+  flex-grow: 1; //尽量把高度都给content
 }
 </style>
