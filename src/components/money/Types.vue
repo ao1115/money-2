@@ -14,23 +14,11 @@ import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class Types extends Vue {
   type = "-";
-  @Prop(Number) xxx: number | undefined;
-  //Prop告诉vue xxx是属性名
-  //Number是运行时的类型
-  //number是编译时的类型
-  //可以写成number | undefined  也可以直接给number一个初始值
   selectType(type: string) {
     if (type !== "-" && type !== "+") {
       throw new Error("type is unkown");
     }
     this.type = type;
-  }
-  mounted() {
-    if (this.xxx === undefined) {
-      console.log("undefined");
-    } else {
-      console.log(this.xxx);
-    }
   }
 }
 </script>
