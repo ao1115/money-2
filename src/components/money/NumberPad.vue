@@ -27,7 +27,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class Types extends Vue {
+export default class NumberPad extends Vue {
   output: string = "0";
   input = "";
 
@@ -81,6 +81,7 @@ export default class Types extends Vue {
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 @import "~@/assets/style/reset.scss";
+
 .numberPad {
   .output {
     @extend %innerShadow;

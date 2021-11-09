@@ -2,15 +2,28 @@
   <div>
     <label for="" class="notes">
       <span class="name">备注</span>
-      <input type="text" placeholder="这里是备注" />
+      <input
+        type="text"
+        :value="value"
+        @input="oninput"
+        placeholder="这里是备注"
+      />
     </label>
   </div>
 </template>
 
-<script>
-export default {
-  name: "Notes",
-};
+<script lang="ts">
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+
+@Component
+export default class Notes extends Vue {
+  value = "";
+  oninput(event: KeyboardEvent) {
+    const input = event.target as HTMLInputElement;
+    this.value = input.value;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
