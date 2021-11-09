@@ -30,7 +30,8 @@ import { Component, Prop } from "vue-property-decorator";
 export default class NumberPad extends Vue {
   output: string = "0";
   input = "";
-
+  lastbtn: boolean[] = [];
+  record = false;
   inputContent(event: MouseEvent) {
     //点击事件就是一个鼠标事件
     const button = event.target as HTMLButtonElement; //用as HTMLButtonElement强制指定类型
@@ -46,14 +47,28 @@ export default class NumberPad extends Vue {
       }
       return;
     }
+
     if (this.output.indexOf(".") >= 0) {
       if (this.input === ".") {
         return;
       }
     }
     this.output += this.input;
-    //加减按钮的操作
-    if (this.output.indexOf("+") >= 0) {
+    //加减按钮的操作。
+    //当点击数字按钮或者加减运算符按钮时，将值逐一拼接在output中
+    //当连续点击加减运算符按钮时，用第二次的覆盖掉第一次的
+    //为了验证上一次和这一次的是否都是加减运算符，我们将每一次点击的按钮都通过 record 布尔值记录在 lastbtn 中，只有当点击加减运算符时，将 record 设置成 true
+    if (this.input === "+" || this.input === "-") {
+      this.record = true;
+    } else {
+      this.record = false;
+    }
+    this.lastbtn.push(this.record);
+    if (
+      this.lastbtn[this.lastbtn.length - 2] &&
+      this.lastbtn[this.lastbtn.length - 1]
+    ) {
+      this.output = this.output.substring(0, this.output.length - 1);
     }
   }
 
@@ -71,10 +86,24 @@ export default class NumberPad extends Vue {
   clear() {
     this.output = "0";
   }
-
-  add() {}
-  subtract() {}
-  ok() {}
+  ok() {
+    // if (this.output.indexOf("+") >= 0) {
+    //   const array = this.output.split("+");
+    //   const sum = array.reduce((a, b) => {
+    //     return parseInt(a) + parseInt(b);
+    //   });
+    //   this.output = sum;
+    // } else if (this.output.indexOf("-") >= 0) {
+    //   const array = this.output.split("-");
+    //   const sub = array.reduce((a, b) => {
+    //     return parseInt(a) - parseInt(b);
+    //   });
+    //   console.log(sub);
+    //   this.output = sub;
+    // } else (this.output){
+    //   return this.output;
+    // }
+  }
 }
 </script>
 
@@ -112,6 +141,8 @@ export default class NumberPad extends Vue {
       &:nth-child(12) {
         border-right: none;
       }
+    }
+    &.class {
     }
   }
 }

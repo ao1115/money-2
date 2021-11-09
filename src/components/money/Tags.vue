@@ -1,4 +1,3 @@
-import { default } from '../../views/Money.vue';
 <template>
   <div class="tags">
     <div class="new">
@@ -26,12 +25,12 @@ import { Component, Prop } from "vue-property-decorator";
 export default class Tags extends Vue {
   //从外部获取数据，用v-for遍历数组
   text = "111";
-  @Prop() dataSource: string[] | undefined;
+  @Prop(Array) dataSource: string[] | undefined;
   selectedTags: string[] = [];
   toggle(tag: string) {
     const index = this.selectedTags.indexOf(tag);
     if (index >= 0) {
-      this.selectedTags.splice(index, 1);
+      this.selectedTags.splice(index, 1); //删除一个元素
     } else {
       this.selectedTags.push(tag);
     }
