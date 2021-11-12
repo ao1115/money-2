@@ -31,7 +31,7 @@ export default class NumberPad extends Vue {
   output: string = "0";
   input = "";
   lastbtn: boolean[] = [];
-  record = false;
+  flag = false;
   inputContent(event: MouseEvent) {
     //点击事件就是一个鼠标事件
     const button = event.target as HTMLButtonElement; //用as HTMLButtonElement强制指定类型
@@ -57,13 +57,13 @@ export default class NumberPad extends Vue {
     //加减按钮的操作。
     //当点击数字按钮或者加减运算符按钮时，将值逐一拼接在output中
     //当连续点击加减运算符按钮时，用第二次的覆盖掉第一次的
-    //为了验证上一次和这一次的是否都是加减运算符，我们将每一次点击的按钮都通过 record 布尔值记录在 lastbtn 中，只有当点击加减运算符时，将 record 设置成 true
+    //为了验证上一次和这一次的是否都是加减运算符，我们将每一次点击的按钮都通过 flag 布尔值记录在 lastbtn 中，只有当点击加减运算符时，将 flag 设置成 true
     if (this.input === "+" || this.input === "-") {
-      this.record = true;
+      this.flag = true;
     } else {
-      this.record = false;
+      this.flag = false;
     }
-    this.lastbtn.push(this.record);
+    this.lastbtn.push(this.flag);
     if (
       this.lastbtn[this.lastbtn.length - 2] &&
       this.lastbtn[this.lastbtn.length - 1]
@@ -103,6 +103,7 @@ export default class NumberPad extends Vue {
     // } else (this.output){
     //   return this.output;
     // }
+    this.$emit("update:value", this.output);
   }
 }
 </script>

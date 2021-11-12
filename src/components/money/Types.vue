@@ -13,12 +13,12 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class Types extends Vue {
-  type = "-";
+  @Prop() readonly type!: string; //type是从外部传进来的数据
   selectType(type: string) {
     if (type !== "-" && type !== "+") {
       throw new Error("type is unkown");
     }
-    this.type = type;
+    this.$emit("update:type", type);
   }
 }
 </script>
@@ -27,7 +27,6 @@ export default class Types extends Vue {
 <style lang="scss" scoped>
 .types {
   background: #c4c4c4;
-
   display: flex;
   text-align: center;
   font-size: 24px;
