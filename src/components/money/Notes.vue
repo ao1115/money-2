@@ -2,8 +2,8 @@
   <div>
     {{ value }}
     <label for="" class="notes">
-      <span class="name">备注</span>
-      <input type="text" v-model="value" placeholder="这里是备注" />
+      <span class="name">{{ this.fieldName }}</span>
+      <input type="text" v-model="value" :placeholder="this.placeholder" />
     </label>
   </div>
 </template>
@@ -20,6 +20,8 @@ export default class Notes extends Vue {
   onValueChanged(value: string, oldvalue: string) {
     this.$emit("update:value", value);
   }
+  @Prop({ required: true }) fieldName!: string; //required:true表示这是必填项
+  @Prop() placeholder?: string; //？表示可以不存在
 }
 </script>
 

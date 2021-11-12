@@ -2,19 +2,20 @@
 <template>
   <Layout>
     <Icon name="left" />
-    <span>编辑标签</span>
+    <Notes fieldName="备注" placeholder="请输入备注" />
+    <div class="createTag-wrapper">
+      <Button>删除标签</Button>
+    </div>
   </Layout>
 </template>
-
-
 <script lang="ts">
 import tagListModel from "@/models/tagListModel";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Icon from "@/components/Icon.vue";
-
+import Notes from "@/components/money/Notes.vue";
+import Button from "@/components/Button.vue";
 //初始化数据
-@Component
+@Component({ components: { Notes, Button } })
 export default class Labels extends Vue {
   created() {
     const id = this.$route.params.id;
