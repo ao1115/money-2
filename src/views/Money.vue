@@ -16,6 +16,9 @@ import Notes from "@/components/money/Notes.vue";
 import Tags from "@/components/money/Tags.vue";
 import { Component, Watch } from "vue-property-decorator";
 
+const recordList: Record[] = JSON.parse(
+  window.localStorage.getItem("recordList") || "[]"
+);
 //声明record的类型
 type Record = {
   tags: string[];
@@ -28,9 +31,7 @@ type Record = {
 @Component({ components: { NumberPad, Types, Tags, Notes } })
 export default class Money extends Vue {
   tags = ["衣", "食", "住", "行"];
-  recordList: Record[] = JSON.parse(
-    window.localStorage.getItem("recordList") || "[]"
-  );
+  recordList: Record[] = recordList;
   //初始化record
   record: Record = {
     tags: [],
