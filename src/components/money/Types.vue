@@ -13,12 +13,12 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class Types extends Vue {
-  @Prop() readonly type!: string; //type是从外部传进来的数据
+  @Prop() readonly type!: string; //type是从外部传进来的数据。！表示不要管有没有初始值
   selectType(type: string) {
     if (type !== "-" && type !== "+") {
       throw new Error("type is unkown");
     }
-    this.$emit("update:type", type);
+    this.$emit("update:type", type); //传回给Money组件
   }
 }
 </script>

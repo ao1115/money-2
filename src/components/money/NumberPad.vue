@@ -104,6 +104,9 @@ export default class NumberPad extends Vue {
     //   return this.output;
     // }
     this.$emit("update:value", this.output);
+    //当点击ok的时候，把收集起来的数据保存到数据库
+    this.$emit("submit", this.output);
+    this.output = "0";
   }
 }
 </script>

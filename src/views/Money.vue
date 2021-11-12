@@ -1,7 +1,7 @@
 <template>
   <Layout class-prefix="layout">
-    {{ record }}
-    <NumberPad @update:value="onUpdateAmount" />
+    {{ recordList }}
+    <NumberPad @update:value="onUpdateAmount" @submit="saveRecord" />
     <Notes @update:value="onUpdateNotes" />
     <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
     <Types :type.sync="record.type" />
@@ -14,7 +14,7 @@ import NumberPad from "@/components/money/NumberPad.vue";
 import Types from "@/components/money/Types.vue";
 import Notes from "@/components/money/Notes.vue";
 import Tags from "@/components/money/Tags.vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 
 //声明record的类型
 type Record = {
@@ -22,11 +22,15 @@ type Record = {
   notes: string;
   type: string;
   amount: number;
+  createdAt?: Date; //加？表示这个参数可以不存在
 };
 
 @Component({ components: { NumberPad, Types, Tags, Notes } })
 export default class Money extends Vue {
   tags = ["衣", "食", "住", "行"];
+  recordList: Record[] = JSON.parse(
+    window.localStorage.getItem("recordList") || "[]"
+  );
   //初始化record
   record: Record = {
     tags: [],
@@ -34,17 +38,27 @@ export default class Money extends Vue {
     type: "-",
     amount: 0,
   };
+
   onUpdateAmount(value: string) {
-    console.log(value);
     this.record.amount = parseFloat(value);
   }
   onUpdateNotes(value: string) {
-    console.log(value);
     this.record.notes = value;
   }
   onUpdateTags(value: string[]) {
-    console.log(value);
     this.record.tags = value;
+  }
+  saveRecord() {
+    //不能直接将this.record传给recordList。这样每次更新的值都是最新的值，应该把值深拷贝一份再传
+    const record2: Record = JSON.parse(JSON.stringify(this.record));
+    record2.createdAt = new Date();
+    this.recordList.push(record2);
+    console.log(this.recordList);
+  }
+  //当recordList变化时，将值传到localStorage
+  @Watch("recordList")
+  onRecordListChanged() {
+    window.localStorage.setItem("recordList", JSON.stringify(this.recordList));
   }
 }
 </script>
