@@ -1,5 +1,5 @@
 const localStorageName = 'recordList'
-const model = {
+const recordListModel = {
     //得到初始化数据
     fetch() {
         return JSON.parse(
@@ -15,4 +15,4 @@ const model = {
 
     }
 }
-export default model
+export default recordListModel

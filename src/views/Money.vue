@@ -1,6 +1,5 @@
 <template>
   <Layout class-prefix="layout">
-    {{ recordList }}
     <NumberPad @update:value="onUpdateAmount" @submit="saveRecord" />
     <Notes @update:value="onUpdateNotes" />
     <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
@@ -14,10 +13,12 @@ import NumberPad from "@/components/money/NumberPad.vue";
 import Types from "@/components/money/Types.vue";
 import Notes from "@/components/money/Notes.vue";
 import Tags from "@/components/money/Tags.vue";
-import model from "@/model";
+import recordListModel from "@/models/recordListModel";
 import { Component, Watch } from "vue-property-decorator";
+import tagListModel from "@/models/tagListModel";
 
-const recordList = model.fetch();
+const recordList = recordListModel.fetch();
+const tagList = tagListModel.fetch();
 
 @Component({ components: { NumberPad, Types, Tags, Notes } })
 export default class Money extends Vue {
@@ -49,7 +50,7 @@ export default class Money extends Vue {
   //当recordList变化时，将值传到localStorage
   @Watch("recordList")
   onRecordListChanged() {
-    model.save(this.recordList);
+    recordListModel.save(this.recordList);
   }
 }
 </script>
