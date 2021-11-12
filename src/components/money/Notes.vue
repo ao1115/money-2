@@ -3,7 +3,12 @@
     {{ value }}
     <label for="" class="notes">
       <span class="name">{{ this.fieldName }}</span>
-      <input type="text" v-model="value" :placeholder="this.placeholder" />
+      <input
+        type="text"
+        :value="value"
+        @input="onValueChanged($event.target.value)"
+        :placeholder="this.placeholder"
+      />
     </label>
   </div>
 </template>
@@ -14,7 +19,7 @@ import { Component, Prop, Watch } from "vue-property-decorator";
 
 @Component
 export default class Notes extends Vue {
-  value = "";
+  @Prop({ default: "" }) readonly value!: string;
   //用Watch来监听value的变化，语法如下，第一个参数是新的值，第二个参数是旧值，当变化时触发update:value
   @Watch("value")
   onValueChanged(value: string, oldvalue: string) {
