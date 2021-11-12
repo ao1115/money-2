@@ -1,6 +1,9 @@
 
 <template>
-  <Layout> 编辑标签 </Layout>
+  <Layout>
+    <Icon name="left" />
+    <span>编辑标签</span>
+  </Layout>
 </template>
 
 
@@ -8,6 +11,7 @@
 import tagListModel from "@/models/tagListModel";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import Icon from "@/components/Icon.vue";
 
 //初始化数据
 @Component
