@@ -6,7 +6,7 @@
       fieldName="备注"
       placeholder="请输入备注"
     />
-    <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
+    <Tags />
     <Types :type.sync="record.type" />
   </Layout>
 </template>
@@ -17,13 +17,12 @@ import NumberPad from "@/components/money/NumberPad.vue";
 import Types from "@/components/money/Types.vue";
 import Notes from "@/components/money/Notes.vue";
 import Tags from "@/components/money/Tags.vue";
-import recordListModel from "@/models/recordListModel";
-import { Component, Watch } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import store from "@/store/index2";
 
 @Component({ components: { NumberPad, Types, Tags, Notes } })
 export default class Money extends Vue {
-  tags = store.tagList;
+  tagList = store.fetchTags();
   recordList = store.recordList;
   record: RecordItem = {
     tags: [],
@@ -37,9 +36,6 @@ export default class Money extends Vue {
   }
   onUpdateNotes(value: string) {
     this.record.notes = value;
-  }
-  onUpdateTags(value: string[]) {
-    this.record.tags = value;
   }
   saveRecord() {
     store.createRecord(this.record);

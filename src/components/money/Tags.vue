@@ -5,12 +5,11 @@
     </div>
     <ul class="current">
       <li
-        v-for="tag in dataSource"
+        v-for="tag in tagList"
         :key="tag.id"
-        @click="toggle(tag)"
         :class="{ selected: selectedTags.indexOf(tag) >= 0 }"
+        @click="toggle(tag)"
       >
-        <!-- selected: selectedTags.indexOf(tag)>=0判断选中状态，如果有tag就是selected -->
         {{ tag.name }}
       </li>
     </ul>
@@ -18,19 +17,18 @@
 </template>
 
 <script lang = "ts">
+import store from "@/store/index2";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class Tags extends Vue {
-  //从外部获取数据，用v-for遍历数组
-  text = "111";
-  @Prop(Array) dataSource: string[] | undefined;
+  tagList = store.fetchTags();
   selectedTags: string[] = [];
   toggle(tag: string) {
     const index = this.selectedTags.indexOf(tag);
     if (index >= 0) {
-      this.selectedTags.splice(index, 1); //删除一个元素
+      this.selectedTags.splice(index, 1);
     } else {
       this.selectedTags.push(tag);
     }
@@ -38,12 +36,10 @@ export default class Tags extends Vue {
   }
   create() {
     const name = window.prompt("请输入标签名");
-    if (name === "") {
-      alert("标签名不能为空");
-    } else if (this.dataSource) {
-      this.$emit("update:dataSource", [...this.dataSource, name]);
-      //不能直接this.dataSource.push(name),这样的话是给外部数据传值。可以在声明dataSource的时候加上readonly属性，但是不适用于push
+    if (!name) {
+      return window.alert("标签名不能为空");
     }
+    store.createTag(name);
   }
 }
 </script>
