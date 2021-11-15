@@ -22,11 +22,10 @@ import { Component, Watch } from "vue-property-decorator";
 import tagListModel from "@/models/tagListModel";
 
 const recordList = recordListModel.fetch();
-tagListModel.fetch();
 
 @Component({ components: { NumberPad, Types, Tags, Notes } })
 export default class Money extends Vue {
-  tags = tagListModel.fetch();
+  tags = window.tagList;
   recordList: RecordItem[] = recordList;
   record: RecordItem = {
     tags: [],
