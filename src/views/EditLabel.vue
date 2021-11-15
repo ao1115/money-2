@@ -31,7 +31,7 @@ export default class Labels extends Vue {
   tag?: { id: string; name: string } = undefined;
   created() {
     const id = this.$route.params.id;
-    const tag = window.findTag(id);
+    const tag = window.store.findTag(id);
     if (tag) {
       this.tag = tag;
     } else {
@@ -40,12 +40,12 @@ export default class Labels extends Vue {
   }
   update(name: string) {
     if (this.tag) {
-      window.updateTag(this.tag.id, name);
+      window.store.updateTag(this.tag.id, name);
     }
   }
   remove() {
     if (this.tag) {
-      if (window.removeTag(this.tag.id)) {
+      if (window.store.removeTag(this.tag.id)) {
         this.$router.back();
       } else {
         alert("删除失败");

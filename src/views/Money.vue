@@ -22,8 +22,8 @@ import { Component, Watch } from "vue-property-decorator";
 
 @Component({ components: { NumberPad, Types, Tags, Notes } })
 export default class Money extends Vue {
-  tags = window.tagList;
-  recordList = window.recordList;
+  tags = window.store.tagList;
+  recordList = window.store.recordList;
   record: RecordItem = {
     tags: [],
     notes: "",
@@ -41,7 +41,7 @@ export default class Money extends Vue {
     this.record.tags = value;
   }
   saveRecord() {
-    window.createRecord(this.record);
+    window.store.createRecord(this.record);
   }
   //当recordList变化时，将值传到localStorage
   // @Watch("recordList")
