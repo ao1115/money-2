@@ -19,14 +19,11 @@ import Notes from "@/components/money/Notes.vue";
 import Tags from "@/components/money/Tags.vue";
 import recordListModel from "@/models/recordListModel";
 import { Component, Watch } from "vue-property-decorator";
-import tagListModel from "@/models/tagListModel";
-
-const recordList = recordListModel.fetch();
 
 @Component({ components: { NumberPad, Types, Tags, Notes } })
 export default class Money extends Vue {
   tags = window.tagList;
-  recordList: RecordItem[] = recordList;
+  recordList = window.recordList;
   record: RecordItem = {
     tags: [],
     notes: "",
@@ -44,13 +41,13 @@ export default class Money extends Vue {
     this.record.tags = value;
   }
   saveRecord() {
-    recordListModel.create(this.record);
+    window.createRecord(this.record);
   }
   //当recordList变化时，将值传到localStorage
-  @Watch("recordList")
-  onRecordListChanged() {
-    recordListModel.save();
-  }
+  // @Watch("recordList")
+  // onRecordListChanged() {
+  //   recordListModel.save();
+  // }
 }
 </script>
 <style lang = "scss">
