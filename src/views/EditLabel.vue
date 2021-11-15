@@ -24,6 +24,7 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Notes from "@/components/money/Notes.vue";
 import Button from "@/components/Button.vue";
+import store from "../store/index2";
 //初始化数据
 @Component({ components: { Notes, Button } })
 export default class Labels extends Vue {
@@ -31,7 +32,7 @@ export default class Labels extends Vue {
   tag?: { id: string; name: string } = undefined;
   created() {
     const id = this.$route.params.id;
-    const tag = window.store.findTag(id);
+    const tag = store.findTag(id);
     if (tag) {
       this.tag = tag;
     } else {
@@ -40,12 +41,12 @@ export default class Labels extends Vue {
   }
   update(name: string) {
     if (this.tag) {
-      window.store.updateTag(this.tag.id, name);
+      store.updateTag(this.tag.id, name);
     }
   }
   remove() {
     if (this.tag) {
-      if (window.store.removeTag(this.tag.id)) {
+      if (store.removeTag(this.tag.id)) {
         this.$router.back();
       } else {
         alert("删除失败");
