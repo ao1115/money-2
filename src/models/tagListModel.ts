@@ -9,6 +9,7 @@ type TagListModel = {
     fetch: () => Tag[]
     create: (name: string) => 'duplicated' | 'success'//success表示成功 duplicated表示失败.。联合类型
     update: (id: string, name: string) => 'duplicated' | 'success' | 'not-found'
+    remove: (id: string) => boolean
     save: () => void
 }
 const tagListModel: TagListModel = {
@@ -41,12 +42,26 @@ const tagListModel: TagListModel = {
             } else {
                 const tag = this.data.filter(item => item.id === id)[0]
                 tag.name = name
+                tag.id = name //将id和name保持一致
                 this.save()
                 return 'success'
             }
         } else {
             return 'not-found'
         }
+    },
+    //删除标签名
+    remove(id: string) {
+        let index = -1
+        for (let i = 0; i < this.data.length; i++) {
+            if (this.data[i].id === id) {
+                index = i
+                break;
+            }
+        }
+        this.data.splice(index, 1)
+        this.save() //必须要保存
+        return true
     },
     //保存数据
     save() {
