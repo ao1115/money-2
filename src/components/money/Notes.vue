@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ value }}
     <label for="" class="notes">
       <span class="name">{{ this.fieldName }}</span>
       <input
