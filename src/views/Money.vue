@@ -45,16 +45,12 @@ export default class Money extends Vue {
     this.record.tags = value;
   }
   saveRecord() {
-    //不能直接将this.record传给recordList。这样每次更新的值都是最新的值，应该把值深拷贝一份再传
-    const record2: RecordItem = JSON.parse(JSON.stringify(this.record));
-    record2.createdAt = new Date();
-    this.recordList.push(record2);
-    console.log(this.recordList);
+    recordListModel.create(this.record);
   }
   //当recordList变化时，将值传到localStorage
   @Watch("recordList")
   onRecordListChanged() {
-    recordListModel.save(this.recordList);
+    recordListModel.save();
   }
 }
 </script>
