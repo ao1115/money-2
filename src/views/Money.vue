@@ -2,6 +2,12 @@
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
     <Notes
+      fieldName="日期"
+      placeholder="请输入备注"
+      type="date"
+      :value.sync="record.createdAt"
+    />
+    <Notes
       @update:value="onUpdateNotes"
       fieldName="备注"
       placeholder="请输入备注"
@@ -32,6 +38,7 @@ export default class Money extends Vue {
     notes: "",
     type: "-",
     amount: 0,
+    createdAt: new Date().toISOString(),
   };
   recordTypeList = recordTypeList;
   created() {

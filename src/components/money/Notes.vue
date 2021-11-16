@@ -2,17 +2,28 @@
   <div>
     <label for="" class="notes">
       <span class="name">{{ this.fieldName }}</span>
-      <input
-        type="text"
-        :value="value"
-        @input="onValueChanged($event.target.value)"
-        :placeholder="this.placeholder"
-      />
+      <template v-if="type === 'date'">
+        <input
+          :type="type || 'text'"
+          :value="x(value)"
+          @input="onValueChanged($event.target.value)"
+          :placeholder="this.placeholder"
+        />
+      </template>
+      <template v-else>
+        <input
+          :type="type || 'text'"
+          :value="value"
+          @input="onValueChanged($event.target.value)"
+          :placeholder="this.placeholder"
+        />
+      </template>
     </label>
   </div>
 </template>
 
 <script lang="ts">
+import dayjs from "dayjs";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 
@@ -26,6 +37,10 @@ export default class Notes extends Vue {
   }
   @Prop({ required: true }) fieldName!: string; //required:true表示这是必填项
   @Prop() placeholder?: string; //？表示可以不存在
+  @Prop() type?: string;
+  x(isoString: string) {
+    return dayjs(isoString).format("YYYY-MM-DD");
+  }
 }
 </script>
 
