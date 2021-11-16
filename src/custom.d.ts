@@ -5,7 +5,7 @@ type RecordItem = {
     notes: string
     type: string
     amount: number // 数据类型 object | string
-    createdAt?: Date  // 类 / 构造函数
+    createdAt?: string  // 类 / 构造函数
 };
 //将name作为id
 type Tag = {
@@ -20,5 +20,10 @@ type TagListModel = {
     remove: (id: string) => boolean
     save: () => void
 };
+type RootState = {
+    recordList: RecordItem[],
+    tagList: Tag[],
+    currentTag?: Tag
+}
 interface Window {
 }

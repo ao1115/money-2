@@ -1,6 +1,6 @@
 <template>
   <Layout class-prefix="layout">
-    <NumberPad @submit="saveRecord" />
+    <NumberPad :value.sync="record.amount" @submit="saveRecord" />
     <Notes
       @update:value="onUpdateNotes"
       fieldName="备注"
@@ -14,7 +14,6 @@
 <script lang = "ts">
 import Vue from "vue";
 import NumberPad from "@/components/money/NumberPad.vue";
-import Types from "@/components/money/Types.vue";
 import Notes from "@/components/money/Notes.vue";
 import Tags from "@/components/money/Tags.vue";
 import { Component } from "vue-property-decorator";
