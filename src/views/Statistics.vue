@@ -5,76 +5,136 @@
       :data-source="recordTypeList"
       :value.sync="type"
     />
-    <Tabs
-      class-prefix="interval"
-      :data-source="intervalList"
-      :value.sync="interval"
-    />
-    <div>
-      <ol>
-        <li v-for="(group, index) in result" :key="index">
-          <h3>{{ group.title }}</h3>
-          <ol>
-            <li v-for="item in group.items" :key="item.id">
-              {{ item.amount }} {{ item.createAt }}
-            </li>
-          </ol>
-        </li>
-      </ol>
-    </div>
+    <ol>
+      <li v-for="(group, index) in groupedList" :key="index">
+        <h3 class="title">
+          {{ beautify(group.title) }} <span>￥{{ group.total }}</span>
+        </h3>
+        <ol>
+          <li v-for="item in group.items" :key="item.id" class="record">
+            <span>{{ tagString(item.tags) }}</span>
+            <span class="notes">{{ item.notes }}</span>
+            <span>￥{{ item.amount }} </span>
+          </li>
+        </ol>
+      </li>
+    </ol>
   </Layout>
 </template>
-
-
-
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Tabs from "@/components/money/Tabs.vue";
 import recordTypeList from "@/countants/recordTypeList";
-import intervalList from "@/countants/intervalList";
+import dayjs from "dayjs";
+import clone from "@/lib/clone";
 @Component({
   components: { Tabs },
-  computed: {},
 })
 export default class Statistics extends Vue {
+  tagString(tags: Tag[]) {
+    return tags.length === 0 ? "无" : tags.join(",");
+  }
+  beautify(string: string) {
+    const day = dayjs(string);
+    const now = dayjs();
+    if (day.isSame(now, "day")) {
+      return "今天";
+    } else if (day.isSame(now.subtract(1, "day"), "day")) {
+      console.log("hi");
+      return "昨天";
+    } else if (day.isSame(now.subtract(2, "day"), "day")) {
+      return "前天";
+    } else if (day.isSame(now, "year")) {
+      return day.format("M月D日");
+    } else {
+      return day.format("YYYY年M月D日");
+    }
+  }
   get recordList() {
-    //必须声明类型，不然$store的类型是any
     return (this.$store.state as RootState).recordList;
   }
-  get result() {
+  get groupedList() {
     const { recordList } = this;
-    type HashTableValue = { title: string; items: RecordItem[] };
-    const hashTable: { [key: string]: HashTableValue } = {};
-    for (let i = 0; i < recordList.length; i++) {
-      const [data, name] = recordList[i].createdAt!.split("T");
-      hashTable[data] = hashTable[data] || { title: data, items: [] };
-      hashTable[data].items.push(recordList[i]);
+    if (recordList.length === 0) {
+      return [];
     }
-    return hashTable;
+    const newList = clone(recordList)
+      .filter((r) => r.type === this.type)
+      .sort(
+        (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
+      );
+    // if ((newList.length = 0)) {
+    //   return [] as Result;
+    // }
+    type Result = { title: string; total?: number; items: RecordItem[] }[];
+    const result: Result = [
+      {
+        title: dayjs(newList[0].createdAt).format("YYYY-MM-DD"),
+        items: [newList[0]],
+      },
+    ];
+    for (let i = 1; i < newList.length; i++) {
+      const current = newList[i];
+      const last = result[result.length - 1];
+      if (dayjs(last.title).isSame(dayjs(current.createdAt), "day")) {
+        last.items.push(current);
+      } else {
+        result.push({
+          title: dayjs(current.createdAt).format("YYYY-MM-DD"),
+          items: [current],
+        });
+      }
+    }
+    result.map((group) => {
+      group.total = group.items.reduce((sum, item) => {
+        console.log(sum);
+        console.log(item);
+        return sum + item.amount;
+      }, 0);
+    });
+    return result;
   }
-
-  type = "-";
-  interval = "day";
-  intervalList = intervalList;
-  recordTypeList = recordTypeList;
   beforeCreate() {
     this.$store.commit("fetchRecords");
   }
+  type = "-";
+  recordTypeList = recordTypeList;
 }
 </script>
 
 <style scoped lang="scss">
-::v-deep .type-tabs-item {
-  background: white;
-  &.selected {
+::v-deep {
+  .type-tabs-item {
     background: #c4c4c4;
-    &::after {
-      display: none;
+    &.selected {
+      background: white;
+      &::after {
+        display: none;
+      }
     }
   }
+  .interval-tabs-item {
+    height: 48px;
+  }
 }
-::v-deep .interval-tabs-item {
-  height: 48px;
+%item {
+  padding: 8px 16px;
+  line-height: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+.title {
+  @extend %item;
+}
+.record {
+  background: white;
+  @extend %item;
+}
+.notes {
+  margin-right: auto;
+  margin-left: 16px;
+  color: #999;
 }
 </style>
