@@ -8,7 +8,7 @@
     </div>
     <div class="form-wrapper">
       <Notes
-        :value="tag.name"
+        :value="currentTag.name"
         field-name="标签名"
         placeholder="请输入标签名"
         @update:value="update"
@@ -24,33 +24,31 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Notes from "@/components/money/Notes.vue";
 import Button from "@/components/Button.vue";
-import store from "../store/index2";
 //初始化数据
 @Component({ components: { Notes, Button } })
-export default class Labels extends Vue {
-  //先把tag存起来，然后传到Notes的value里面
-  tag?: { id: string; name: string } = undefined;
+export default class EditLabel extends Vue {
+  get currentTag() {
+    return this.$store.state.currentTag;
+  }
   created() {
     const id = this.$route.params.id;
-    const tag = store.findTag(id);
-    if (tag) {
-      this.tag = tag;
-    } else {
+    this.$store.commit("fetchTags");
+    this.$store.commit("setCurrentTag", id);
+    if (!this.currentTag) {
       this.$router.replace("/404");
     }
   }
   update(name: string) {
-    if (this.tag) {
-      store.updateTag(this.tag.id, name);
+    if (this.currentTag) {
+      this.$store.commit("updateTag", {
+        id: this.currentTag.id,
+        name,
+      });
     }
   }
   remove() {
-    if (this.tag) {
-      if (store.removeTag(this.tag.id)) {
-        this.$router.back();
-      } else {
-        alert("删除失败");
-      }
+    if (this.currentTag) {
+      this.$store.commit("removeTag", this.currentTag.id);
     }
   }
   goBack() {
