@@ -7,7 +7,7 @@
       placeholder="请输入备注"
     />
     <Tags />
-    <Types :type.sync="record.type" />
+    <Tabs :data-source="recordTypeList" :value.sync="record.type" />
   </Layout>
 </template>
 
@@ -18,9 +18,11 @@ import Types from "@/components/money/Types.vue";
 import Notes from "@/components/money/Notes.vue";
 import Tags from "@/components/money/Tags.vue";
 import { Component } from "vue-property-decorator";
+import recordTypeList from "@/countants/recordTypeList";
+import Tabs from "@/components/money/Tabs.vue";
 
 @Component({
-  components: { NumberPad, Types, Tags, Notes },
+  components: { NumberPad, Tabs, Tags, Notes },
 })
 export default class Money extends Vue {
   get recordList() {
@@ -32,6 +34,7 @@ export default class Money extends Vue {
     type: "-",
     amount: 0,
   };
+  recordTypeList = recordTypeList;
   created() {
     this.$store.commit("fetchRecords");
   }
