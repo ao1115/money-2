@@ -17,6 +17,7 @@ module.exports = {
     config.module.rule('svg').exclude.add(dir) // 其他 svg loader 排除 icons 目录
 
 
+
     // config.module
     //   .rule('svg-sprite')
     //   .test(/\.(svg)(\?.*)?$/)
@@ -28,5 +29,9 @@ module.exports = {
     // config.plugin('svg-sprite').use(require('svg-sprite-loader-mod/plugin'), [{plainSprite: true}])
     // config.module.rule('svg').exclude.add(dir)
 
-  }
+  },
+  transpileDependencies: [
+    'vue-echarts',
+    'resize-detector'
+  ]
 }
