@@ -34,7 +34,7 @@ import recordTypeList from "@/countants/recordTypeList";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
 import Chart from "../components/Chart.vue";
-import _ from "lodash";
+const _ = require("lodash");
 @Component({
   components: { Tabs, Chart },
 })
