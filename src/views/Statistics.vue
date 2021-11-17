@@ -9,7 +9,7 @@
       <Chart :options="chartOptions" class="chart" />
     </div>
 
-    <ol>
+    <ol v-if="groupedList.length > 0">
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">
           {{ beautify(group.title) }} <span>￥{{ group.total }}</span>
@@ -23,6 +23,7 @@
         </ol>
       </li>
     </ol>
+    <div v-else class="noResult">目前没有相关记录</div>
   </Layout>
 </template>
 <script lang="ts">
@@ -39,7 +40,7 @@ import _ from "lodash";
 })
 export default class Statistics extends Vue {
   tagString(tags: Tag[]) {
-    return tags.length === 0 ? "无" : tags.join(",");
+    return tags.length === 0 ? "无" : tags.map((t) => t.name).join("，");
   }
   beautify(string: string) {
     const day = dayjs(string);
@@ -149,6 +150,9 @@ export default class Statistics extends Vue {
       .sort(
         (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
       );
+    if (newList.length === 0) {
+      return [];
+    }
     // if ((newList.length = 0)) {
     //   return [] as Result;
     // }
@@ -231,5 +235,9 @@ export default class Statistics extends Vue {
       display: none;
     }
   }
+}
+.noResult {
+  padding: 16px;
+  text-align: center;
 }
 </style>
