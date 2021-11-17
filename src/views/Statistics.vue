@@ -6,7 +6,7 @@
       :value.sync="type"
     />
     <div class="chart-wrapper" ref="chartWrapper">
-      <Chart :options="x" class="chart" />
+      <Chart :options="chartOptions" class="chart" />
     </div>
 
     <ol>
@@ -33,6 +33,7 @@ import recordTypeList from "@/countants/recordTypeList";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
 import Chart from "../components/Chart.vue";
+import _ from "lodash";
 @Component({
   components: { Tabs, Chart },
 })
@@ -46,7 +47,6 @@ export default class Statistics extends Vue {
     if (day.isSame(now, "day")) {
       return "今天";
     } else if (day.isSame(now.subtract(1, "day"), "day")) {
-      console.log("hi");
       return "昨天";
     } else if (day.isSame(now.subtract(2, "day"), "day")) {
       return "前天";
@@ -62,8 +62,38 @@ export default class Statistics extends Vue {
     //不要写死9999，等于它的最大宽度
     div.scrollLeft = div.scrollWidth;
   }
+  //构造30天的数据，借鉴计数排序
+  get keyValueList() {
+    const today = new Date();
+    const array = [];
+    for (let i = 0; i <= 29; i++) {
+      const dateString = dayjs(today).subtract(i, "day").format("YYYY-MM-DD");
+      console.log(dateString);
+      const found = _.find(this.recordList, {
+        createdAt: dateString,
+      });
+      console.log(found);
+      array.push({
+        date: dateString,
+        value: found?.amount || 0,
+      });
+      array.sort((a, b) => {
+        if (a.date > b.date) {
+          return 1;
+        } else if (a.date === b.date) {
+          return 0;
+        } else {
+          return -1;
+        }
+      });
+    }
+    console.log(array);
 
-  get x() {
+    return array;
+  }
+  get chartOptions() {
+    const keys = this.keyValueList.map((item) => item.date);
+    const values = this.keyValueList.map((item) => item.value);
     return {
       //将默认的左右两边空白去掉
       grid: {
@@ -72,40 +102,14 @@ export default class Statistics extends Vue {
       },
       xAxis: {
         type: "category",
-        data: [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10",
-          "11",
-          "12",
-          "13",
-          "14",
-          "15",
-          "16",
-          "17",
-          "18",
-          "19",
-          "20",
-          "21",
-          "22",
-          "23",
-          "24",
-          "25",
-          "26",
-          "27",
-          "28",
-          "29",
-          "30",
-        ],
+        data: keys,
         axisTick: { alignWithLabel: true },
         axisLine: { lineStyle: { color: "#666" } },
+        axisLabel: {
+          formatter: function (value: string, index: number) {
+            return value.substr(5);
+          },
+        },
       },
       yAxis: {
         type: "value",
@@ -120,11 +124,7 @@ export default class Statistics extends Vue {
             color: "#666",
             borderColor: "#666",
           },
-          data: [
-            820, 932, 901, 934, 1290, 1330, 1320, 820, 932, 901, 934, 1290,
-            1330, 1320, 820, 932, 901, 934, 1290, 1330, 1320, 820, 932, 901,
-            934, 1290, 1330, 1320, 1, 2,
-          ],
+          data: values,
           type: "line",
         },
       ],
@@ -173,8 +173,6 @@ export default class Statistics extends Vue {
     }
     result.map((group) => {
       group.total = group.items.reduce((sum, item) => {
-        console.log(sum);
-        console.log(item);
         return sum + item.amount;
       }, 0);
     });
