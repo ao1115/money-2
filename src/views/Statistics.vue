@@ -5,7 +5,10 @@
       :data-source="recordTypeList"
       :value.sync="type"
     />
-    <Chart :options="x" />
+    <div class="chart-wrapper" ref="chartWrapper">
+      <Chart :options="x" class="chart" />
+    </div>
+
     <ol>
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">
@@ -53,8 +56,20 @@ export default class Statistics extends Vue {
       return day.format("YYYY年M月D日");
     }
   }
+  //将图标滚动到最右边
+  mounted() {
+    const div = this.$refs.chartWrapper as HTMLDivElement;
+    //不要写死9999，等于它的最大宽度
+    div.scrollLeft = div.scrollWidth;
+  }
+
   get x() {
     return {
+      //将默认的左右两边空白去掉
+      grid: {
+        left: 0,
+        right: 0,
+      },
       xAxis: {
         type: "category",
         data: [
@@ -89,12 +104,22 @@ export default class Statistics extends Vue {
           "29",
           "30",
         ],
+        axisTick: { alignWithLabel: true },
+        axisLine: { lineStyle: { color: "#666" } },
       },
       yAxis: {
         type: "value",
+        show: false,
       },
       series: [
         {
+          symbol: "circle",
+          symbolSize: 12,
+          itemStyle: {
+            borderWidth: 1,
+            color: "#666",
+            borderColor: "#666",
+          },
           data: [
             820, 932, 901, 934, 1290, 1330, 1320, 820, 932, 901, 934, 1290,
             1330, 1320, 820, 932, 901, 934, 1290, 1330, 1320, 820, 932, 901,
@@ -103,7 +128,12 @@ export default class Statistics extends Vue {
           type: "line",
         },
       ],
-      tooltip: { show: true },
+      tooltip: {
+        show: true,
+        triggerOn: "click",
+        position: "top",
+        formatter: "{c}",
+      },
     };
   }
   get recordList() {
@@ -191,5 +221,17 @@ export default class Statistics extends Vue {
   margin-right: auto;
   margin-left: 16px;
   color: #999;
+}
+.chart {
+  //占五屏
+  width: 420%;
+  &-wrapper {
+    // 在外面设置滚动
+    overflow: auto;
+    &::-webkit-scrollbar {
+      //取消滚动条
+      display: none;
+    }
+  }
 }
 </style>
