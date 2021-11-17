@@ -1,6 +1,7 @@
 <template>
   <div class="layout-wrapper">
     <div class="content" :class="classPrefix && `${classPrefix}-content`">
+      <div class="appname">橙子记账</div>
       <!-- 先判断是不是有classPrefix -->
       <slot />
     </div>
@@ -18,7 +19,14 @@ export default {
 .layout-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+}
+.appname {
+  width: 100%;
+  height: 64px;
+  background-color: rgb(244, 220, 96);
+  line-height: 64px;
+  text-align: center;
 }
 .content {
   overflow: auto;

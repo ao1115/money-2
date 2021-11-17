@@ -1,19 +1,19 @@
 <template>
   <Layout class-prefix="layout">
-    <NumberPad :value.sync="record.amount" @submit="saveRecord" />
+    <Tabs :data-source="recordTypeList" :value.sync="record.type" />
+    <Tags @update:value="record.tags = $event" />
+    <Notes
+      :value.sync="record.notes"
+      fieldName="备注"
+      placeholder="请输入备注"
+    />
     <Notes
       fieldName="日期"
       placeholder="请输入备注"
       type="date"
       :value.sync="record.createdAt"
     />
-    <Notes
-      :value.sync="record.notes"
-      fieldName="备注"
-      placeholder="请输入备注"
-    />
-    <Tags @update:value="record.tags = $event" />
-    <Tabs :data-source="recordTypeList" :value.sync="record.type" />
+    <NumberPad :value.sync="record.amount" @submit="saveRecord" />
   </Layout>
 </template>
 
@@ -60,7 +60,7 @@ export default class Money extends Vue {
 /* 写前缀的class名 */
 .layout-content {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
 }
 </style>
 

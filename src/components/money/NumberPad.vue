@@ -68,6 +68,7 @@ export default class NumberPad extends Vue {
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 .numberPad {
+  overflow: hidden;
   .output {
     @extend %clearFix;
     @extend %innerShadow;

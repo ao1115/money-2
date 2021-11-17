@@ -5,6 +5,11 @@
       :data-source="recordTypeList"
       :value.sync="type"
     />
+    <Tabs
+      class-prefix="chart-list"
+      :data-source="chartList"
+      :value.sync="value"
+    />
     <div class="chart-wrapper" ref="chartWrapper">
       <Chart :options="chartOptions" class="chart" />
     </div>
@@ -31,6 +36,7 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Tabs from "@/components/money/Tabs.vue";
 import recordTypeList from "@/countants/recordTypeList";
+import chartList from "@/countants/chartList";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
 import Chart from "../components/Chart.vue";
@@ -187,6 +193,7 @@ export default class Statistics extends Vue {
   }
   type = "-";
   recordTypeList = recordTypeList;
+  chartList = chartList;
 }
 </script>
 
@@ -235,6 +242,8 @@ export default class Statistics extends Vue {
       display: none;
     }
   }
+}
+.chart-list {
 }
 .noResult {
   padding: 16px;

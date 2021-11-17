@@ -15,6 +15,7 @@ const store = new Vuex.Store({
     tagList: [],
     currentTag: undefined
   } as RootState,
+
   mutations: {
     setCurrentTag(state, id: string) {
       state.currentTag = state.tagList.filter(t => t.id === id)[0];

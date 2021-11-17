@@ -41,7 +41,7 @@ nav {
     }
   }
   > .item.selected {
-    color: $color-highlight;
+    color: rgb(244, 220, 96);
   }
 }
 </style>
