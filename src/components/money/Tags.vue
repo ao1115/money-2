@@ -1,7 +1,7 @@
 <template>
   <div class="tags">
     <div class="new">
-      <button @click="createTag">新增按钮</button>
+      <button @click="createTag"><Icon name="tianjia" />新建标签</button>
     </div>
     <ul class="current">
       <li
@@ -10,6 +10,15 @@
         :class="{ selected: selectedTags.indexOf(tag) >= 0 }"
         @click="toggle(tag)"
       >
+        <Icon name="taobao" v-if="tag.id === '1'" />
+        <Icon name="tongxun" v-else-if="tag.id === '2'" />
+        <Icon name="canyin" v-else-if="tag.id === '3'" />
+        <Icon name="bus" v-else-if="tag.id === '4'" />
+        <Icon name="gouwu" v-else-if="tag.id === '5'" />
+        <Icon name="shucai" v-else-if="tag.id === '6'" />
+        <Icon name="shuiguo" v-else-if="tag.id === '7'" />
+        <Icon name="yule" v-else-if="tag.id === '8'" />
+        <Icon name="tianjia" v-else />
         {{ tag.name }}
       </li>
     </ul>

@@ -1,7 +1,7 @@
 <template>
   <div class="layout-wrapper">
     <div class="content" :class="classPrefix && `${classPrefix}-content`">
-      <div class="appname">橙子记账</div>
+      <div class="appname"><Icon name="logo" />橙子记账</div>
       <!-- 先判断是不是有classPrefix -->
       <slot />
     </div>
@@ -27,6 +27,10 @@ export default {
   background-color: rgb(244, 220, 96);
   line-height: 64px;
   text-align: center;
+  > svg {
+    width: 36px;
+    height: 36px;
+  }
 }
 .content {
   overflow: auto;

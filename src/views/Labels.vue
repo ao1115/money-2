@@ -8,7 +8,19 @@
         :key="tag.id"
         :to="`/labels/edit/${tag.id}`"
       >
-        <span>{{ tag.name }}</span>
+        <div class="tagname">
+          <Icon name="taobao" v-if="tag.id === '1'" />
+          <Icon name="tongxun" v-else-if="tag.id === '2'" />
+          <Icon name="canyin" v-else-if="tag.id === '3'" />
+          <Icon name="bus" v-else-if="tag.id === '4'" />
+          <Icon name="gouwu" v-else-if="tag.id === '5'" />
+          <Icon name="shucai" v-else-if="tag.id === '6'" />
+          <Icon name="shuiguo" v-else-if="tag.id === '7'" />
+          <Icon name="yule" v-else-if="tag.id === '8'" />
+          <Icon name="tianjia" v-else />
+          <span>{{ tag.name }}</span>
+        </div>
+
         <Icon name="right" />
       </router-link>
     </div>
@@ -24,6 +36,8 @@ import { Component } from "vue-property-decorator";
 import Button from "@/components/Button.vue";
 import { mixins } from "vue-class-component";
 import TagHelper from "@/mixins/TagHelper";
+import Tags from "@/components/money/Tags.vue";
+import Money from "./Money.vue";
 //初始化数据
 
 @Component({ components: { Button } })
@@ -48,7 +62,17 @@ export default class Labels extends mixins(TagHelper) {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #e6e6e6;
-    svg {
+    > .tagname {
+      > svg {
+        width: 24px;
+        height: 24px;
+        vertical-align: -6px;
+      }
+      > span {
+        margin-left: 5px;
+      }
+    }
+    > svg {
       width: 18px;
       height: 18px;
       color: #666;
