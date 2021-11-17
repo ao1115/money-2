@@ -69,13 +69,13 @@ export default class Statistics extends Vue {
     for (let i = 0; i <= 29; i++) {
       const dateString = dayjs(today).subtract(i, "day").format("YYYY-MM-DD");
       console.log(dateString);
-      const found = _.find(this.recordList, {
-        createdAt: dateString,
+      const found = _.find(this.groupedList, {
+        title: dateString,
       });
       console.log(found);
       array.push({
         date: dateString,
-        value: found?.amount || 0,
+        value: found?.total || 0,
       });
       array.sort((a, b) => {
         if (a.date > b.date) {
