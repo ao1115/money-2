@@ -4,10 +4,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import echarts, { ECharts, EChartsOption } from "echarts";
+import echarts, { ECharts, EChartOption } from "echarts";
 @Component
 export default class Chart extends Vue {
-  @Prop() options?: EChartsOption;
+  @Prop() options?: EChartOption;
   chart?: ECharts;
   mounted() {
     if (this.options === undefined) {
@@ -17,7 +17,7 @@ export default class Chart extends Vue {
     this.chart.setOption(this.options);
   }
   @Watch("options")
-  onOptionsChanged(newValue: EChartsOption) {
+  onOptionsChanged(newValue: EChartOption) {
     this.chart!.setOption(newValue);
   }
 }

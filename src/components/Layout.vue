@@ -1,7 +1,9 @@
 <template>
   <div class="layout-wrapper">
     <div class="content" :class="classPrefix && `${classPrefix}-content`">
-      <div class="appname"><Icon name="logo" />橙子记账</div>
+      <div class="appname">
+        <Icon name="logo" /> <span class="logo">橙子记账</span>
+      </div>
       <!-- 先判断是不是有classPrefix -->
       <slot />
     </div>
@@ -16,6 +18,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/style/helper.scss";
+@import "~@/assets/style/reset.scss";
 .layout-wrapper {
   display: flex;
   flex-direction: column;
@@ -27,7 +31,14 @@ export default {
   background-color: rgb(244, 220, 96);
   line-height: 64px;
   text-align: center;
+  > span {
+    font-size: 24px;
+    font-family: $font-kai;
+  }
   > svg {
+    position: fixed;
+    top: 12px;
+    left: 8px;
     width: 36px;
     height: 36px;
   }

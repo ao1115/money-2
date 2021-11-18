@@ -5,15 +5,17 @@
       :data-source="recordTypeList"
       :value.sync="type"
     />
-    <Tabs
-      class-prefix="chart-list"
-      :data-source="chartList"
-      :value.sync="value"
-    />
+    <div class="chart-text">
+      <span>统计</span>
+      <Icon name="slidedown" />
+    </div>
     <div class="chart-wrapper" ref="chartWrapper">
       <Chart :options="chartOptions" class="chart" />
     </div>
-
+    <div class="details">
+      <span>明细</span>
+      <Icon name="slidedown" />
+    </div>
     <ol v-if="groupedList.length > 0">
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">
@@ -36,7 +38,6 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Tabs from "@/components/money/Tabs.vue";
 import recordTypeList from "@/countants/recordTypeList";
-import chartList from "@/countants/chartList";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
 import Chart from "../components/Chart.vue";
@@ -128,8 +129,8 @@ export default class Statistics extends Vue {
           symbolSize: 12,
           itemStyle: {
             borderWidth: 1,
-            color: "#666",
-            borderColor: "#666",
+            color: "#999",
+            borderColor: "#999",
           },
           data: values,
           type: "line",
@@ -193,18 +194,24 @@ export default class Statistics extends Vue {
   }
   type = "-";
   recordTypeList = recordTypeList;
-  chartList = chartList;
 }
 </script>
 
 <style scoped lang="scss">
 ::v-deep {
   .type-tabs-item {
-    background: #c4c4c4;
+    background: #f5f5f5;
+    height: 48px;
+    font-size: 16px;
     &.selected {
-      background: white;
-      &::after {
-        display: none;
+      color: rgb(244, 220, 96);
+      &.selected::after {
+        content: "";
+        position: absolute;
+        bottom: 9px;
+        width: 40%;
+        height: 2px;
+        background: rgb(244, 220, 96);
       }
     }
   }
@@ -234,6 +241,7 @@ export default class Statistics extends Vue {
 .chart {
   //占五屏
   width: 420%;
+  height: 240px;
   &-wrapper {
     // 在外面设置滚动
     overflow: auto;
@@ -243,10 +251,24 @@ export default class Statistics extends Vue {
     }
   }
 }
-.chart-list {
-}
 .noResult {
   padding: 16px;
   text-align: center;
+}
+.chart-text {
+  background-color: rgb(248, 235, 170);
+  height: 24px;
+  margin-top: 8px;
+  > span {
+    margin-left: 10px;
+  }
+}
+.details {
+  background-color: rgb(248, 235, 170);
+  height: 24px;
+  margin-bottom: 8px;
+  > span {
+    margin-left: 10px;
+  }
 }
 </style>
